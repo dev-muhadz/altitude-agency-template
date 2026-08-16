@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Altitude</title>
+  <meta name="description" content="Start a project with Altitude. Tell us about your goals and we'll reply within one business day." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="logo" aria-label="Altitude home">
+        <span class="logo__mark" aria-hidden="true"></span>
+        Altitude
+      </a>
+
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html" aria-current="page">Contact</a></li>
+        </ul>
+        <div class="nav__cta">
+          <a href="contact.html" class="btn btn--primary btn--sm">Start a project</a>
+        </div>
+      </nav>
+
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ==================================================================
+         PAGE HEADER
+         ================================================================== -->
+    <section class="page-header">
+      <div class="container">
+        <p class="breadcrumb"><a href="index.html">Home</a> / Contact</p>
+        <p class="eyebrow">Get in touch</p>
+        <h1>Tell us what you're building. We'll reply within one business day.</h1>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         CONTACT FORM + MAP
+         ================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-layout">
+
+          <!-- Form panel: validated client-side by initContactForm() in main.js -->
+          <div class="contact-form-panel reveal">
+            <h2 style="font-size: var(--text-xl); margin-bottom: var(--space-6);">Project inquiry</h2>
+
+            <!-- Success/status message, toggled visible via .is-visible -->
+            <div class="form-status" role="status" aria-live="polite"></div>
+
+            <form id="contact-form" novalidate>
+              <div class="form-row">
+                <div class="field">
+                  <label for="name">Full name</label>
+                  <input type="text" id="name" name="name" placeholder="Jamie Rivera" autocomplete="name" required />
+                  <span class="field-error" role="alert">Please enter your full name.</span>
+                </div>
+
+                <div class="field">
+                  <label for="email">Work email</label>
+                  <input type="email" id="email" name="email" placeholder="jamie@company.com" autocomplete="email" required />
+                  <span class="field-error" role="alert">Please enter a valid email address.</span>
+                </div>
+
+                <div class="field">
+                  <label for="company">Company <span style="text-transform:none; opacity:.6;">(optional)</span></label>
+                  <input type="text" id="company" name="company" placeholder="Company name" autocomplete="organization" />
+                </div>
+
+                <div class="field">
+                  <label for="budget">Estimated budget</label>
+                  <select id="budget" name="budget">
+                    <option value="under-10k">Under $10,000</option>
+                    <option value="10k-50k" selected>$10,000 – $50,000</option>
+                    <option value="50k-150k">$50,000 – $150,000</option>
+                    <option value="150k-plus">$150,000+</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="message">Project details</label>
+                  <textarea id="message" name="message" placeholder="What are you trying to build, and what does success look like?" required></textarea>
+                  <span class="field-error" role="alert">Tell us a little more (10 characters minimum).</span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn--primary btn--block">Send message</button>
+              <p class="field-hint" style="text-align:center; margin-top: var(--space-4);">By submitting, you agree to be contacted about your inquiry. We don't share your details with third parties.</p>
+            </form>
+          </div>
+
+          <!-- Map + quick contact info -->
+          <div>
+            <div class="map-embed reveal">
+              <!--
+                Google Maps embed placeholder.
+                To activate: replace this div with an <iframe> pointing at
+                your Google Maps embed URL, e.g.:
+
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=YOUR_EMBED_CODE"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                  allowfullscreen>
+                </iframe>
+              -->
+              <div class="map-placeholder">
+                <strong style="font-family: var(--font-display); font-size: var(--text-base); color: var(--color-ink);">Map embed placeholder</strong>
+                <span>Swap this block for a Google Maps &lt;iframe&gt; embed — see the HTML comment above this element.</span>
+              </div>
+            </div>
+
+            <div style="margin-top: var(--space-6);">
+              <h3 style="font-size: var(--text-base); margin-bottom: var(--space-3);">Prefer email or a call?</h3>
+              <ul style="display:flex; flex-direction:column; gap: var(--space-2); font-size: var(--text-sm);">
+                <li><a href="mailto:hello@altitude.agency">hello@altitude.agency</a></li>
+                <li><a href="tel:+18885550142">+1 (888) 555-0142</a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         OFFICE CONTACT CARDS
+         ================================================================== -->
+    <section class="section section--alt" id="offices">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Our offices</p>
+          <h2 class="section-heading">Come by if you're in the area</h2>
+        </div>
+
+        <div class="office-cards">
+          <div class="office-card reveal">
+            <h3 class="office-card__city">Portland, OR — HQ</h3>
+            <address>
+              412 NW Couch Street, Suite 300<br />
+              Portland, OR 97209<br />
+              <a href="tel:+15035550118">+1 (503) 555-0118</a><br />
+              <a href="mailto:portland@altitude.agency">portland@altitude.agency</a>
+            </address>
+          </div>
+          <div class="office-card reveal">
+            <h3 class="office-card__city">Austin, TX — East Studio</h3>
+            <address>
+              1108 E 6th Street, Floor 2<br />
+              Austin, TX 78702<br />
+              <a href="tel:+15125550173">+1 (512) 555-0173</a><br />
+              <a href="mailto:austin@altitude.agency">austin@altitude.agency</a>
+            </address>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo" style="color:var(--color-paper);">
+            <span class="logo__mark" aria-hidden="true"></span>
+            Altitude
+          </a>
+          <p class="text-muted" style="margin-top: var(--space-4); max-width: 32ch; opacity:.7;">A digital agency &amp; product studio for teams who need design and engineering that hold up under real usage.</p>
+        </div>
+        <div>
+          <h4>Sitemap</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Brand &amp; Identity</a></li>
+            <li><a href="services.html">Web &amp; Product Design</a></li>
+            <li><a href="services.html">Engineering &amp; Builds</a></li>
+            <li><a href="services.html">Growth &amp; Performance</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@altitude.agency">hello@altitude.agency</a></li>
+            <li><a href="tel:+18885550142">+1 (888) 555-0142</a></li>
+            <li><a href="contact.html">Office locations</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Altitude Studio LLC. All rights reserved.</span>
+        <span>Template by Altitude — replace this line with your own agency credit.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

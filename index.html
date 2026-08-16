@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Altitude — Digital Agency &amp; Product Studio</title>
+  <meta name="description" content="Altitude is a digital agency that designs, builds, and scales web products, brands, and growth systems for ambitious companies." />
+
+  <!-- Google Fonts: Space Grotesk (display), Inter (body), IBM Plex Mono (data/labels) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- Skip link: first focusable element, hidden until focused -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ======================================================================
+       SITE HEADER — sticky, shared across all pages
+       ====================================================================== -->
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="index.html" class="logo" aria-label="Altitude home">
+        <span class="logo__mark" aria-hidden="true"></span>
+        Altitude
+      </a>
+
+      <nav class="nav" id="primary-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav__cta">
+          <a href="contact.html" class="btn btn--primary btn--sm">Start a project</a>
+        </div>
+      </nav>
+
+      <!-- Hamburger toggle — visible only below the desktop breakpoint -->
+      <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav" aria-label="Toggle navigation menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ====================================================================
+         HERO — headline + dual CTA, paired with a "case-file" style stat
+         panel. This panel is the page's signature element.
+         ==================================================================== -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__grid">
+
+          <div>
+            <p class="eyebrow hero__tag">Digital agency &amp; product studio</p>
+            <h1 class="hero__title">We build digital products that move the numbers that matter.</h1>
+            <p class="hero__lede">Altitude partners with founders and growth teams to design, engineer, and scale websites, apps, and brand systems — from first sketch to shipped product.</p>
+
+            <div class="hero__actions">
+              <a href="contact.html" class="btn btn--primary">Start a project</a>
+              <a href="services.html" class="btn btn--ghost">See our capabilities</a>
+            </div>
+          </div>
+
+          <!-- Signature dossier panel: reads like a stamped project file -->
+          <div class="hero__panel reveal">
+            <p class="hero__panel-label">Case file — Active engagement</p>
+            <div class="hero__panel-stat">+312%</div>
+            <p class="text-muted" style="color: var(--color-paper); opacity:.7;">Organic pipeline growth for a Series B fintech client, 9 months post-launch.</p>
+            <div>
+              <div class="hero__panel-row">
+                <span class="font-mono" style="font-size:var(--text-xs); opacity:.6;">Discipline</span>
+                <span>Product &amp; Growth</span>
+              </div>
+              <div class="hero__panel-row">
+                <span class="font-mono" style="font-size:var(--text-xs); opacity:.6;">Timeline</span>
+                <span>14 weeks</span>
+              </div>
+              <div class="hero__panel-row">
+                <span class="font-mono" style="font-size:var(--text-xs); opacity:.6;">Status</span>
+                <span style="color: var(--color-mint);">Shipped</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="diagonal-cut" aria-hidden="true"></div>
+    </section>
+
+    <!-- ====================================================================
+         TRUST STRIP — client logo marquee (pure CSS animation, no JS)
+         ==================================================================== -->
+    <section class="trust">
+      <div class="container">
+        <p class="trust__label">Trusted by growth-stage &amp; enterprise teams</p>
+        <div class="marquee">
+          <!-- Track content is duplicated once so the loop can reset seamlessly at -50% -->
+          <div class="marquee__track">
+            <span>Northwind &amp; Co.</span>
+            <span>Fernbank Health</span>
+            <span>Lumen Financial</span>
+            <span>Carraway Goods</span>
+            <span>Aperture Labs</span>
+            <span>Solstice Retail</span>
+            <span>Northwind &amp; Co.</span>
+            <span>Fernbank Health</span>
+            <span>Lumen Financial</span>
+            <span>Carraway Goods</span>
+            <span>Aperture Labs</span>
+            <span>Solstice Retail</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SERVICES OVERVIEW
+         ==================================================================== -->
+    <section class="section" id="services-overview">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">What we do</p>
+          <h2 class="section-heading">Four disciplines, one accountable team</h2>
+          <p class="section-lede">We don't hand you off between departments. The same senior team scopes, builds, and stays on for the outcome.</p>
+        </div>
+
+        <div class="grid grid--4">
+
+          <article class="service-card reveal">
+            <span class="service-card__index">01</span>
+            <span class="service-card__icon" aria-hidden="true">◆</span>
+            <h3>Brand &amp; Identity</h3>
+            <p class="text-muted">Positioning, naming, and visual systems built to hold up across every surface your company touches.</p>
+            <a href="services.html" class="service-card__link">Explore service <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-card__index">02</span>
+            <span class="service-card__icon" aria-hidden="true">▣</span>
+            <h3>Web &amp; Product Design</h3>
+            <p class="text-muted">Interfaces engineered around real user behaviour, not trend cycles — validated with research, not guesses.</p>
+            <a href="services.html" class="service-card__link">Explore service <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-card__index">03</span>
+            <span class="service-card__icon" aria-hidden="true">◈</span>
+            <h3>Engineering &amp; Builds</h3>
+            <p class="text-muted">Performant, accessible, maintainable front and back-end builds — no framework lock-in you didn't choose.</p>
+            <a href="services.html" class="service-card__link">Explore service <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="service-card reveal">
+            <span class="service-card__index">04</span>
+            <span class="service-card__icon" aria-hidden="true">▲</span>
+            <h3>Growth &amp; Performance</h3>
+            <p class="text-muted">SEO, lifecycle, and paid systems tuned against the metrics your board actually asks about.</p>
+            <a href="services.html" class="service-card__link">Explore service <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         STATS COUNTER — animates on scroll via IntersectionObserver
+         ==================================================================== -->
+    <section class="section section--dark">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow" style="color: var(--color-mint);">By the numbers</p>
+          <h2 class="section-heading">A decade of shipped work, measured honestly</h2>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <!-- data-counter-target is the number JS animates toward -->
+            <div class="stat__value" data-counter-target="180" data-counter-suffix="+">0</div>
+            <p class="stat__label">Projects delivered</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value" data-counter-target="94" data-counter-suffix="%">0</div>
+            <p class="stat__label">Client retention rate</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value" data-counter-target="12" data-counter-suffix="">0</div>
+            <p class="stat__label">Years in practice</p>
+          </div>
+          <div class="stat">
+            <div class="stat__value" data-counter-target="46" data-counter-suffix="M">0</div>
+            <p class="stat__label">Revenue influenced for clients</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         FEATURED CASE STUDIES — cards launch the shared modal (see js/main.js)
+         ==================================================================== -->
+    <section class="section" id="case-studies">
+      <div class="container">
+        <div class="section-head section-head--split">
+          <div>
+            <p class="eyebrow">Selected work</p>
+            <h2 class="section-heading">Case files</h2>
+          </div>
+          <p class="section-lede" style="margin-top:0;">Three engagements, three different problems. Tap any file for the full write-up.</p>
+        </div>
+
+        <div class="grid grid--3">
+
+          <article class="case-card reveal" data-modal-trigger data-modal-type="case-study"
+                    data-tag="Fintech · Product"
+                    data-name="Lumen Financial: rebuilding trust at scale"
+                    data-role="Product design, engineering &amp; growth — 14 week engagement"
+                    data-bio="Lumen came to us after a rushed MVP launch stalled at 2% conversion. We rebuilt the onboarding flow around a single guided task, restructured the information architecture, and shipped a design system the internal team still uses today. The result was a compounding lift in signups that held steady well past launch."
+                    data-photo-initials="LF">
+            <div class="case-card__media">
+              <span class="case-card__file-no font-mono">FILE / 014</span>
+              <span class="case-card__tag">Fintech</span>
+            </div>
+            <div class="case-card__body">
+              <h3>Lumen Financial</h3>
+              <p class="text-muted">A full onboarding rebuild that turned a leaking signup funnel into the company's top growth channel.</p>
+              <div class="case-card__metric" data-metric="+312%" data-metric-label="Signup conversion">
+                <span class="case-card__metric-value">+312%</span>
+                <span>Signup conversion</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="case-card reveal" data-modal-trigger data-modal-type="case-study"
+                    data-tag="Retail · Brand"
+                    data-name="Solstice Retail: a brand system for 40 stores"
+                    data-role="Brand identity &amp; web platform — 10 week engagement"
+                    data-bio="Solstice was opening its 40th storefront with a brand identity that hadn't changed since store one. We rebuilt the identity system, packaging language, and e-commerce platform in parallel, giving their internal marketing team a toolkit that scaled without a design department."
+                    data-photo-initials="SR">
+            <div class="case-card__media">
+              <span class="case-card__file-no font-mono">FILE / 021</span>
+              <span class="case-card__tag">Retail</span>
+            </div>
+            <div class="case-card__body">
+              <h3>Solstice Retail</h3>
+              <p class="text-muted">A brand and commerce platform refresh across 40 physical locations and one unified online store.</p>
+              <div class="case-card__metric" data-metric="+150%" data-metric-label="Online revenue">
+                <span class="case-card__metric-value">+150%</span>
+                <span>Online revenue</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="case-card reveal" data-modal-trigger data-modal-type="case-study"
+                    data-tag="Healthcare · Engineering"
+                    data-name="Fernbank Health: a portal patients actually use"
+                    data-role="Engineering &amp; accessibility audit — 18 week engagement"
+                    data-bio="Fernbank's patient portal had a 61% drop-off rate at account creation. We re-engineered the front end for WCAG 2.2 AA compliance, cut form fields by half, and rebuilt the appointment scheduler as a progressive web app. Support tickets related to the portal dropped by two-thirds within a quarter."
+                    data-photo-initials="FH">
+            <div class="case-card__media">
+              <span class="case-card__file-no font-mono">FILE / 027</span>
+              <span class="case-card__tag">Healthcare</span>
+            </div>
+            <div class="case-card__body">
+              <h3>Fernbank Health</h3>
+              <p class="text-muted">An accessibility-first patient portal rebuild that cut support tickets and drop-off in half.</p>
+              <div class="case-card__metric" data-metric="-68%" data-metric-label="Support tickets">
+                <span class="case-card__metric-value">-68%</span>
+                <span>Support tickets</span>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TESTIMONIALS — JS-powered slider (see initTestimonialSlider)
+         ==================================================================== -->
+    <section class="section section--alt">
+      <div class="container">
+        <div class="testimonial-slider">
+          <p class="eyebrow" style="justify-content:center;">Client feedback</p>
+
+          <div class="testimonial-slider__track">
+            <div class="testimonial-slide">
+              <blockquote>"Altitude didn't just redesign our product — they rebuilt how our team thinks about shipping. The onboarding numbers alone paid for the engagement twice over."</blockquote>
+              <cite>Priya Nakamura, VP Product — Lumen Financial</cite>
+            </div>
+            <div class="testimonial-slide">
+              <blockquote>"We've worked with three agencies before Altitude. They're the first one that treated our brand guidelines as a real deliverable instead of a PDF nobody opens."</blockquote>
+              <cite>Marcus Webb, CMO — Solstice Retail</cite>
+            </div>
+            <div class="testimonial-slide">
+              <blockquote>"The accessibility work alone would have taken our internal team a year. Altitude shipped it in eighteen weeks without slowing anything else down."</blockquote>
+              <cite>Dana Okafor, Director of Engineering — Fernbank Health</cite>
+            </div>
+          </div>
+
+          <div class="testimonial-slider__controls">
+            <button class="testimonial-arrow" data-testimonial-prev aria-label="Previous testimonial">←</button>
+            <div class="testimonial-dots" role="tablist" aria-label="Choose testimonial"></div>
+            <button class="testimonial-arrow" data-testimonial-next aria-label="Next testimonial">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CONTACT TEASER
+         ==================================================================== -->
+    <section class="section">
+      <div class="container">
+        <div class="contact-teaser reveal">
+          <div>
+            <p class="eyebrow" style="color: var(--color-mint);">Let's talk</p>
+            <h2>Have a project in mind? We reply within one business day.</h2>
+          </div>
+          <a href="contact.html" class="btn btn--light">Get in touch</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       SHARED MODAL — populated dynamically by JS for both team bios and
+       case studies (see js/main.js → initModals). Markup stays identical
+       across all pages so it only needs to be defined once each.
+       ====================================================================== -->
+  <div class="modal-overlay" id="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <button class="modal-close" aria-label="Close dialog">✕</button>
+      <p class="eyebrow" data-field="eyebrow"></p>
+      <div class="modal__media" data-field="media" style="display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-size:var(--text-3xl); color:#fff;"></div>
+      <h3 class="modal__title" id="modal-title" data-field="title"></h3>
+      <p class="modal__subtitle" data-field="subtitle"></p>
+      <div class="modal__body" data-field="body"></div>
+      <div class="modal__metrics" data-field="metrics"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       SITE FOOTER
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo" style="color:var(--color-paper);">
+            <span class="logo__mark" aria-hidden="true"></span>
+            Altitude
+          </a>
+          <p class="text-muted" style="margin-top: var(--space-4); max-width: 32ch; opacity:.7;">A digital agency &amp; product studio for teams who need design and engineering that hold up under real usage.</p>
+        </div>
+        <div>
+          <h4>Sitemap</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="services.html">Brand &amp; Identity</a></li>
+            <li><a href="services.html">Web &amp; Product Design</a></li>
+            <li><a href="services.html">Engineering &amp; Builds</a></li>
+            <li><a href="services.html">Growth &amp; Performance</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@altitude.agency">hello@altitude.agency</a></li>
+            <li><a href="tel:+18885550142">+1 (888) 555-0142</a></li>
+            <li><a href="contact.html">Office locations</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Altitude Studio LLC. All rights reserved.</span>
+        <span>Template by Altitude — replace this line with your own agency credit.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
