@@ -2,21 +2,7 @@
    ALTITUDE — Digital Agency & Corporate Template
    Core JavaScript (Vanilla ES6+, no dependencies)
    --------------------------------------------------------------------------
-   This single file is shared across all four pages. Every feature checks
-   for the presence of its DOM hooks before running, so it is safe to
-   include on pages that don't use a given component.
-
-   Table of contents:
-     1. Utilities
-     2. Mobile Navigation Toggle
-     3. Scroll Reveal (IntersectionObserver)
-     4. Animated Statistics Counter
-     5. Tabbed Process Timeline (services.html)
-     6. Feature Comparison Toggle (services.html)
-     7. Modal System (team bios + case studies)
-     8. Testimonial Slider (index.html)
-     9. Contact Form Validation (contact.html)
-     10. Header Scroll State + Active Nav Link
+   Shared by all pages. Every feature checks for its DOM hooks before running.
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,15 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScrollState();
 });
 
-
 /* ==========================================================================
    1. UTILITIES
    ========================================================================== */
-
-/**
- * Shallow query-selector helper. Returns null gracefully instead of
- * throwing, so callers can safely `if (el)` guard.
- */
 function qs(selector, scope = document) {
   return scope.querySelector(selector);
 }
@@ -48,10 +28,6 @@ function qsa(selector, scope = document) {
   return Array.from(scope.querySelectorAll(selector));
 }
 
-/**
- * Debounce: limits how often a function can fire. Used on scroll/resize
- * listeners to keep the UI smooth on lower-powered mobile devices.
- */
 function debounce(fn, wait = 100) {
   let timeout;
   return (...args) => {
@@ -60,66 +36,90 @@ function debounce(fn, wait = 100) {
   };
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+}
 
 /* ==========================================================================
-   2. MOBILE NAVIGATION TOGGLE
+   2. MOBILE NAVIGATION
    --------------------------------------------------------------------------
-   Accessible hamburger menu: toggles aria-expanded, traps nothing (menu is
-   a simple off-canvas drawer, not a full dialog) but does restore focus to
-   the toggle button on close and closes on Escape / outside click.
+   Keeps keyboard focus inside the open mobile menu, moves focus into the
+   menu when opened, restores focus to the toggle on close, and closes on
+   Escape or link activation.
    ========================================================================== */
 function initMobileNav() {
   const toggle = qs('.nav-toggle');
   const nav = qs('#primary-nav');
   if (!toggle || !nav) return;
 
-  const closeNav = () => {
+  const getLinks = () => qsa('a', nav);
+
+  const closeNav = (restoreFocus = false) => {
     nav.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('modal-open');
+    if (restoreFocus) toggle.focus();
   };
 
   const openNav = () => {
     nav.classList.add('is-open');
     toggle.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('modal-open'); // reuse scroll-lock utility
+    document.body.classList.add('modal-open');
+
+    const firstLink = getLinks()[0];
+    firstLink?.focus();
   };
 
   toggle.addEventListener('click', () => {
     const isOpen = nav.classList.contains('is-open');
-    isOpen ? closeNav() : openNav();
+    isOpen ? closeNav(true) : openNav();
   });
 
-  // Close the drawer whenever a nav link is tapped (mobile UX expectation)
-  qsa('a', nav).forEach((link) => link.addEventListener('click', closeNav));
+  getLinks().forEach((link) => {
+    link.addEventListener('click', () => closeNav());
+  });
 
-  // Close on Escape key for keyboard users
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
-      closeNav();
-      toggle.focus();
+    if (!nav.classList.contains('is-open')) return;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeNav(true);
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+
+    const links = getLinks();
+    if (!links.length) return;
+
+    const first = links[0];
+    const last = links[links.length - 1];
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   });
 
-  // Close when the viewport is resized past the desktop breakpoint
   window.addEventListener('resize', debounce(() => {
-    if (window.innerWidth >= 960) closeNav();
+    if (window.innerWidth >= 960 && nav.classList.contains('is-open')) {
+      closeNav();
+    }
   }, 150));
 }
 
-
 /* ==========================================================================
    3. SCROLL REVEAL
-   --------------------------------------------------------------------------
-   Adds `.is-visible` to any element carrying `.reveal` once it enters the
-   viewport. Pure presentation — respects prefers-reduced-motion via CSS.
    ========================================================================== */
 function initScrollReveal() {
   const targets = qsa('.reveal');
   if (!targets.length) return;
 
-  if (!('IntersectionObserver' in window)) {
-    // Fallback for very old browsers: just show everything immediately.
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
     targets.forEach((el) => el.classList.add('is-visible'));
     return;
   }
@@ -128,7 +128,7 @@ function initScrollReveal() {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target); // animate once, then stop observing
+        obs.unobserve(entry.target);
       }
     });
   }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
@@ -136,48 +136,48 @@ function initScrollReveal() {
   targets.forEach((el) => observer.observe(el));
 }
 
-
 /* ==========================================================================
    4. ANIMATED STATISTICS COUNTER
-   --------------------------------------------------------------------------
-   Any element with [data-counter-target] animates its textContent from 0
-   up to the target number when it scrolls into view. Supports an optional
-   [data-counter-suffix] (e.g. "%", "+", "M") appended after the number.
-   Example markup:
-     <span class="stat__value" data-counter-target="150" data-counter-suffix="%">0</span>
    ========================================================================== */
 function initStatsCounters() {
   const counters = qsa('[data-counter-target]');
   if (!counters.length) return;
 
-  const animateCounter = (el) => {
+  const setCounterValue = (el) => {
     const target = parseFloat(el.getAttribute('data-counter-target'), 10) || 0;
     const suffix = el.getAttribute('data-counter-suffix') || '';
-    const duration = 1600; // ms — total animation length
-    const startTime = performance.now();
+    el.textContent = target.toLocaleString() + suffix;
+  };
 
-    // Ease-out-quad easing for a natural "settle" feel at the end of the count
+  const animateCounter = (el) => {
+    if (prefersReducedMotion()) {
+      setCounterValue(el);
+      return;
+    }
+
+    const target = parseFloat(el.getAttribute('data-counter-target'), 10) || 0;
+    const suffix = el.getAttribute('data-counter-suffix') || '';
+    const duration = 1600;
+    const startTime = performance.now();
     const easeOutQuad = (t) => t * (2 - t);
 
     function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = easeOutQuad(progress);
-      const current = Math.round(target * eased);
+      const progress = Math.min((now - startTime) / duration, 1);
+      const current = Math.round(target * easeOutQuad(progress));
       el.textContent = current.toLocaleString() + suffix;
 
       if (progress < 1) {
         requestAnimationFrame(tick);
       } else {
-        el.textContent = target.toLocaleString() + suffix; // snap to exact value
+        setCounterValue(el);
       }
     }
 
     requestAnimationFrame(tick);
   };
 
-  if (!('IntersectionObserver' in window)) {
-    counters.forEach(animateCounter);
+  if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+    counters.forEach(setCounterValue);
     return;
   }
 
@@ -185,7 +185,7 @@ function initStatsCounters() {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         animateCounter(entry.target);
-        obs.unobserve(entry.target); // count up once per page view
+        obs.unobserve(entry.target);
       }
     });
   }, { threshold: 0.4 });
@@ -193,18 +193,30 @@ function initStatsCounters() {
   counters.forEach((el) => observer.observe(el));
 }
 
-
 /* ==========================================================================
    5. TABBED PROCESS TIMELINE (services.html)
    --------------------------------------------------------------------------
-   Click-through tabs revealing one workflow step at a time. Fully keyboard
-   operable (arrow keys move between tabs, following the WAI-ARIA Tabs
-   pattern) and syncs aria-selected / hidden panels.
+   Adds the missing ARIA relationships between tabs and their panels while
+   preserving the existing click and arrow-key behavior.
    ========================================================================== */
 function initProcessTabs() {
   const tabs = qsa('.process-tab');
   const panels = qsa('.process-panel');
   if (!tabs.length || !panels.length) return;
+
+  tabs.forEach((tab, index) => {
+    const tabId = tab.id || `process-tab-${index + 1}`;
+    const panel = panels[index];
+    if (!panel) return;
+
+    const panelId = panel.id || `process-panel-${index + 1}`;
+    tab.id = tabId;
+    panel.id = panelId;
+    tab.setAttribute('aria-controls', panelId);
+    panel.setAttribute('role', 'tabpanel');
+    panel.setAttribute('aria-labelledby', tabId);
+    panel.tabIndex = 0;
+  });
 
   const activate = (index) => {
     tabs.forEach((tab, i) => {
@@ -213,35 +225,38 @@ function initProcessTabs() {
       tab.setAttribute('aria-selected', String(isActive));
       tab.tabIndex = isActive ? 0 : -1;
     });
-    panels.forEach((panel, i) => panel.classList.toggle('is-active', i === index));
+
+    panels.forEach((panel, i) => {
+      const isActive = i === index;
+      panel.classList.toggle('is-active', isActive);
+      panel.hidden = !isActive;
+    });
   };
 
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => activate(index));
 
-    // Arrow-key navigation between tabs, per ARIA authoring practices
     tab.addEventListener('keydown', (e) => {
       let newIndex = null;
+
       if (e.key === 'ArrowRight') newIndex = (index + 1) % tabs.length;
       if (e.key === 'ArrowLeft') newIndex = (index - 1 + tabs.length) % tabs.length;
+      if (e.key === 'Home') newIndex = 0;
+      if (e.key === 'End') newIndex = tabs.length - 1;
+
       if (newIndex !== null) {
         e.preventDefault();
-        tabs[newIndex].focus();
         activate(newIndex);
+        tabs[newIndex].focus();
       }
     });
   });
 
-  activate(0); // first step is open by default
+  activate(0);
 }
-
 
 /* ==========================================================================
    6. FEATURE COMPARISON TOGGLE (services.html)
-   --------------------------------------------------------------------------
-   Optional monthly/annual billing toggle above the comparison cards. Swaps
-   the displayed price using data attributes on each price element:
-     <span class="compare-card__price" data-monthly="$2,400" data-annual="$1,900">
    ========================================================================== */
 function initComparisonToggle() {
   const toggle = qs('#billing-toggle');
@@ -250,8 +265,10 @@ function initComparisonToggle() {
 
   const applyPeriod = (isAnnual) => {
     prices.forEach((el) => {
-      const value = isAnnual ? el.getAttribute('data-annual') : el.getAttribute('data-monthly');
-      const numberNode = el.firstChild; // preserve the trailing <span>/month unit
+      const value = isAnnual
+        ? el.getAttribute('data-annual')
+        : el.getAttribute('data-monthly');
+      const numberNode = el.firstChild;
       if (numberNode) numberNode.textContent = value;
     });
   };
@@ -260,25 +277,17 @@ function initComparisonToggle() {
   applyPeriod(toggle.checked);
 }
 
-
 /* ==========================================================================
    7. MODAL SYSTEM (team bios + case studies)
-   --------------------------------------------------------------------------
-   A single reusable overlay is populated from data attributes on whichever
-   trigger card was clicked, so no duplicate markup is needed per person or
-   project. Traps focus within the modal while open and restores focus to
-   the trigger element on close.
-   Trigger markup example:
-     <button class="team-card" data-modal-trigger
-             data-name="Jordan Blake" data-role="Creative Director"
-             data-bio="..." data-photo-initials="JB">
-   ========================================================================== */
+   -------------------------------------------------------------------------- */
 function initModals() {
   const overlay = qs('#modal-overlay');
   if (!overlay) return;
 
   const modal = qs('.modal', overlay);
   const closeBtn = qs('.modal-close', overlay);
+  if (!modal || !closeBtn) return;
+
   let lastFocusedTrigger = null;
 
   const populateTeamModal = (trigger) => {
@@ -299,7 +308,7 @@ function initModals() {
 
     const metricsWrap = qs('[data-field="metrics"]', modal);
     const metricEls = qsa('[data-metric]', trigger);
-    if (metricEls.length) {
+    if (metricsWrap && metricEls.length) {
       metricsWrap.style.display = 'grid';
       metricsWrap.innerHTML = metricEls.map((m) => `
         <div>
@@ -307,7 +316,7 @@ function initModals() {
           <div class="modal__metric-label">${m.getAttribute('data-metric-label')}</div>
         </div>
       `).join('');
-    } else {
+    } else if (metricsWrap) {
       metricsWrap.style.display = 'none';
     }
   };
@@ -327,30 +336,50 @@ function initModals() {
     overlay.classList.remove('is-open');
     document.body.classList.remove('modal-open');
     overlay.setAttribute('aria-hidden', 'true');
-    if (lastFocusedTrigger) lastFocusedTrigger.focus();
+
+    if (lastFocusedTrigger?.isConnected) {
+      lastFocusedTrigger.focus();
+    }
   };
 
   qsa('[data-modal-trigger]').forEach((trigger) => {
+    // Team cards are already buttons. Case-study cards are articles, so give
+    // non-interactive triggers keyboard semantics without changing markup.
+    if (trigger.tagName !== 'BUTTON' && trigger.tagName !== 'A') {
+      trigger.tabIndex = 0;
+      trigger.setAttribute('role', 'button');
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          trigger.click();
+        }
+      });
+    }
+
     trigger.addEventListener('click', () => openModal(trigger));
   });
 
   closeBtn.addEventListener('click', closeModal);
 
-  // Click on the dimmed backdrop (not the modal itself) closes it
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) closeModal();
   });
 
-  // Escape key closes the modal
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) {
+      closeModal();
+    }
   });
 
-  // Basic focus trap: keep Tab cycling within the modal while open
   overlay.addEventListener('keydown', (e) => {
     if (e.key !== 'Tab' || !overlay.classList.contains('is-open')) return;
-    const focusable = qsa('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])', modal);
+
+    const focusable = qsa(
+      'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])',
+      modal
+    );
     if (!focusable.length) return;
+
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
 
@@ -364,13 +393,8 @@ function initModals() {
   });
 }
 
-
 /* ==========================================================================
    8. TESTIMONIAL SLIDER (index.html)
-   --------------------------------------------------------------------------
-   Lightweight, dependency-free slider. Auto-advances every 7s, pauses on
-   hover/focus, and is fully controllable via the prev/next arrows and dot
-   navigation.
    ========================================================================== */
 function initTestimonialSlider() {
   const root = qs('.testimonial-slider');
@@ -385,19 +409,23 @@ function initTestimonialSlider() {
   let current = 0;
   let autoplayId = null;
 
-  // Build dot navigation dynamically based on the number of slides present
-  const dots = slides.map((_, i) => {
-    const dot = document.createElement('button');
-    dot.type = 'button';
-    dot.setAttribute('aria-label', `Show testimonial ${i + 1}`);
-    dot.addEventListener('click', () => goTo(i));
-    dotsWrap.appendChild(dot);
-    return dot;
-  });
+  const dots = dotsWrap
+    ? slides.map((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `Show testimonial ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i));
+        dotsWrap.appendChild(dot);
+        return dot;
+      })
+    : [];
 
   function render() {
     slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
-    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === current));
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === current);
+      dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+    });
   }
 
   function goTo(index) {
@@ -409,11 +437,16 @@ function initTestimonialSlider() {
   function prev() { goTo(current - 1); }
 
   function startAutoplay() {
+    if (prefersReducedMotion()) return;
     stopAutoplay();
     autoplayId = setInterval(next, 7000);
   }
+
   function stopAutoplay() {
-    if (autoplayId) clearInterval(autoplayId);
+    if (autoplayId) {
+      clearInterval(autoplayId);
+      autoplayId = null;
+    }
   }
 
   nextBtn?.addEventListener('click', () => { next(); startAutoplay(); });
@@ -422,19 +455,16 @@ function initTestimonialSlider() {
   root.addEventListener('mouseenter', stopAutoplay);
   root.addEventListener('mouseleave', startAutoplay);
   root.addEventListener('focusin', stopAutoplay);
-  root.addEventListener('focusout', startAutoplay);
+  root.addEventListener('focusout', (e) => {
+    if (!root.contains(e.relatedTarget)) startAutoplay();
+  });
 
   render();
   startAutoplay();
 }
 
-
 /* ==========================================================================
    9. CONTACT FORM VALIDATION (contact.html)
-   --------------------------------------------------------------------------
-   Client-side validation only (no backend wired up — swap the fetch() stub
-   with a real endpoint). Validates on submit and re-validates a field on
-   blur once the user has already tried to submit once.
    ========================================================================== */
 function initContactForm() {
   const form = qs('#contact-form');
@@ -455,20 +485,19 @@ function initContactForm() {
 
     const result = validator(field.value);
     const wrapper = field.closest('.field');
-    const errorEl = qs('.field-error', wrapper);
+    const errorEl = wrapper ? qs('.field-error', wrapper) : null;
 
     if (result === true) {
-      wrapper.classList.remove('has-error');
+      wrapper?.classList.remove('has-error');
+      if (errorEl) errorEl.textContent = '';
       return true;
     }
 
-    wrapper.classList.add('has-error');
+    wrapper?.classList.add('has-error');
     if (errorEl) errorEl.textContent = result;
     return false;
   }
 
-  // Re-validate individual fields as the user fixes them, but only after
-  // they've made a first submit attempt (avoids scolding users too early).
   qsa('input, textarea', form).forEach((field) => {
     field.addEventListener('blur', () => {
       if (hasAttemptedSubmit) validateField(field);
@@ -483,16 +512,14 @@ function initContactForm() {
     const isValid = fields.map(validateField).every(Boolean);
 
     if (!isValid) {
-      // Move focus to the first invalid field for accessibility
       const firstInvalid = form.querySelector('.has-error input, .has-error textarea');
       firstInvalid?.focus();
       return;
     }
 
-    // ---- Submission stub -------------------------------------------------
-    // Replace this block with a real fetch() call to your form backend
-    // (e.g. Formspree, Netlify Forms, or a custom API endpoint).
     const submitBtn = qs('button[type="submit"]', form);
+    if (!submitBtn) return;
+
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending…';
 
@@ -500,19 +527,16 @@ function initContactForm() {
       form.reset();
       submitBtn.disabled = false;
       submitBtn.textContent = 'Send message';
-      statusBox.textContent = "Thanks — your message is in. We'll reply within one business day.";
-      statusBox.classList.add('is-visible');
+      if (statusBox) {
+        statusBox.textContent = "Thanks — your message is in. We'll reply within one business day.";
+        statusBox.classList.add('is-visible');
+      }
     }, 900);
   });
 }
 
-
 /* ==========================================================================
    10. HEADER SCROLL STATE + ACTIVE NAV LINK
-   --------------------------------------------------------------------------
-   Adds a subtle elevation to the sticky header once the page scrolls, and
-   marks the nav link matching the current page with aria-current="page"
-   (falls back gracefully if a page isn't in the link list).
    ========================================================================== */
 function initHeaderScrollState() {
   const header = qs('.site-header');
