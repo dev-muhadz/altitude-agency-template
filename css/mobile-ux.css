@@ -42,11 +42,19 @@
     transform: translate3d(0, 0, 0);
   }
 
-  /* Keep the menu toggle above the drawer so the close control remains
-     reachable even when the page is scrolled to the bottom. */
+  /* Keep the toggle above the drawer. When open, pin it to the viewport so
+     the X remains visible and tappable regardless of page scroll position. */
   .nav-toggle {
     position: relative;
     z-index: 102;
+  }
+
+  .nav-toggle[aria-expanded="true"] {
+    position: fixed;
+    top: max(1rem, env(safe-area-inset-top));
+    right: 1rem;
+    z-index: 1100;
+    background-color: var(--color-paper);
   }
 
   .modal-overlay {
