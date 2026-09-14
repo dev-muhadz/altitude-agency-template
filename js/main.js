@@ -350,6 +350,8 @@ function initModals() {
   };
 
   qsa('[data-modal-trigger]').forEach((trigger) => {
+    // Team cards are already buttons. Case-study cards are articles, so give
+    // non-interactive triggers keyboard semantics without changing markup.
     if (trigger.tagName !== 'BUTTON' && trigger.tagName !== 'A') {
       trigger.tabIndex = 0;
       trigger.setAttribute('role', 'button');
