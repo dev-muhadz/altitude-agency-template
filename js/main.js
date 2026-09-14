@@ -1,4 +1,4 @@
-/* ==========================================================================
+/* ========================================================================== 
    ALTITUDE — Digital Agency & Corporate Template
    Core JavaScript (Vanilla ES6+, no dependencies)
    --------------------------------------------------------------------------
@@ -50,7 +50,7 @@ function prefersReducedMotion() {
    --------------------------------------------------------------------------
    Keeps keyboard focus inside the open mobile menu, moves focus into the
    menu when opened, restores focus to the toggle on close, and closes on
-   Escape or link activation.
+   Escape, link activation, or tapping outside the drawer.
    ========================================================================== */
 function initMobileNav() {
   const toggle = qs('.nav-toggle');
@@ -82,6 +82,12 @@ function initMobileNav() {
 
   getLinks().forEach((link) => {
     link.addEventListener('click', () => closeNav());
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!nav.classList.contains('is-open')) return;
+    if (nav.contains(e.target) || toggle.contains(e.target)) return;
+    closeNav(true);
   });
 
   document.addEventListener('keydown', (e) => {
