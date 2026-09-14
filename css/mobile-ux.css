@@ -12,16 +12,33 @@
     overflow-x: clip;
   }
 
+  /* The navigation lives inside a sticky header. On mobile browsers,
+     backdrop-filter on that ancestor can change the containing block used by
+     fixed descendants. Disable it here so the drawer stays anchored to the
+     actual viewport, even when the user opens it near the bottom of the page. */
+  .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .nav {
+    position: fixed !important;
+    top: 0;
     right: 0;
+    bottom: 0;
     left: auto;
     width: min(84vw, 360px);
     max-width: 100vw;
     height: 100dvh;
     max-height: 100dvh;
+    transform: translate3d(100%, 0, 0);
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+  }
+
+  .nav.is-open {
+    transform: translate3d(0, 0, 0);
   }
 
   .modal-overlay {
