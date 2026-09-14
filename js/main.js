@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeaderScrollState();
 });
 
-/* ==========================================================================
+/* ========================================================================== 
    1. UTILITIES
    ========================================================================== */
 function qs(selector, scope = document) {
@@ -40,7 +40,7 @@ function prefersReducedMotion() {
   return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    2. MOBILE NAVIGATION
    --------------------------------------------------------------------------
    Keeps keyboard focus inside the open mobile menu, moves focus into the
@@ -67,7 +67,7 @@ function initMobileNav() {
     document.body.classList.add('modal-open');
 
     const firstLink = getLinks()[0];
-    firstLink?.focus();
+    firstLink?.focus({ preventScroll: true });
   };
 
   toggle.addEventListener('click', () => {
@@ -112,7 +112,7 @@ function initMobileNav() {
   }, 150));
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    3. SCROLL REVEAL
    ========================================================================== */
 function initScrollReveal() {
@@ -136,7 +136,7 @@ function initScrollReveal() {
   targets.forEach((el) => observer.observe(el));
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    4. ANIMATED STATISTICS COUNTER
    ========================================================================== */
 function initStatsCounters() {
@@ -193,7 +193,7 @@ function initStatsCounters() {
   counters.forEach((el) => observer.observe(el));
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    5. TABBED PROCESS TIMELINE (services.html)
    --------------------------------------------------------------------------
    Adds the missing ARIA relationships between tabs and their panels while
@@ -255,7 +255,7 @@ function initProcessTabs() {
   activate(0);
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    6. FEATURE COMPARISON TOGGLE (services.html)
    ========================================================================== */
 function initComparisonToggle() {
@@ -277,9 +277,11 @@ function initComparisonToggle() {
   applyPeriod(toggle.checked);
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    7. MODAL SYSTEM (team bios + case studies)
-   -------------------------------------------------------------------------- */
+   --------------------------------------------------------------------------
+   Modal sizing and scroll containment are handled responsively in CSS.
+   ========================================================================== */
 function initModals() {
   const overlay = qs('#modal-overlay');
   if (!overlay) return;
@@ -343,8 +345,6 @@ function initModals() {
   };
 
   qsa('[data-modal-trigger]').forEach((trigger) => {
-    // Team cards are already buttons. Case-study cards are articles, so give
-    // non-interactive triggers keyboard semantics without changing markup.
     if (trigger.tagName !== 'BUTTON' && trigger.tagName !== 'A') {
       trigger.tabIndex = 0;
       trigger.setAttribute('role', 'button');
@@ -393,7 +393,7 @@ function initModals() {
   });
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    8. TESTIMONIAL SLIDER (index.html)
    ========================================================================== */
 function initTestimonialSlider() {
@@ -463,14 +463,14 @@ function initTestimonialSlider() {
   startAutoplay();
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    9. CONTACT FORM VALIDATION (contact.html)
    ========================================================================== */
 function initContactForm() {
   const form = qs('#contact-form');
   if (!form) return;
 
-  const statusBox = qs('.form-status', form);
+  const statusBox = qs('.form-status');
   let hasAttemptedSubmit = false;
 
   const validators = {
@@ -535,7 +535,7 @@ function initContactForm() {
   });
 }
 
-/* ==========================================================================
+/* ========================================================================== 
    10. HEADER SCROLL STATE + ACTIVE NAV LINK
    ========================================================================== */
 function initHeaderScrollState() {
