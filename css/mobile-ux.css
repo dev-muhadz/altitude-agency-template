@@ -35,10 +35,30 @@
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    z-index: 1001;
   }
 
   .nav.is-open {
     transform: translate3d(0, 0, 0);
+  }
+
+  /* Keep the hamburger/X above the drawer so it remains the visible close
+     control even when the menu is opened from the bottom of a long page. */
+  .nav-toggle {
+    position: relative;
+    z-index: 1002;
+  }
+
+  /* The backdrop is inserted by JS only while the mobile nav is open. */
+  .nav-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    cursor: default;
   }
 
   .modal-overlay {

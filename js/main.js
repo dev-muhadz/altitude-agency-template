@@ -50,26 +50,38 @@ function prefersReducedMotion() {
    --------------------------------------------------------------------------
    Keeps keyboard focus inside the open mobile menu, moves focus into the
    menu when opened, restores focus to the toggle on close, and closes on
-   Escape or link activation.
+   Escape, link activation, or tapping the backdrop.
    ========================================================================== */
 function initMobileNav() {
   const toggle = qs('.nav-toggle');
   const nav = qs('#primary-nav');
-  if (!toggle || !nav) return;
+  const header = qs('.site-header');
+  if (!toggle || !nav || !header) return;
 
   const getLinks = () => qsa('a', nav);
+
+  const backdrop = document.createElement('button');
+  backdrop.type = 'button';
+  backdrop.className = 'nav-backdrop';
+  backdrop.setAttribute('aria-label', 'Close navigation');
+  backdrop.hidden = true;
+  header.insertBefore(backdrop, nav);
 
   const closeNav = (restoreFocus = false) => {
     nav.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('modal-open');
-    if (restoreFocus) toggle.focus();
+    backdrop.classList.remove('is-visible');
+    backdrop.hidden = true;
+    if (restoreFocus) toggle.focus({ preventScroll: true });
   };
 
   const openNav = () => {
     nav.classList.add('is-open');
     toggle.setAttribute('aria-expanded', 'true');
     document.body.classList.add('modal-open');
+    backdrop.hidden = false;
+    backdrop.classList.add('is-visible');
 
     const firstLink = getLinks()[0];
     firstLink?.focus({ preventScroll: true });
@@ -79,6 +91,8 @@ function initMobileNav() {
     const isOpen = nav.classList.contains('is-open');
     isOpen ? closeNav(true) : openNav();
   });
+
+  backdrop.addEventListener('click', () => closeNav(true));
 
   getLinks().forEach((link) => {
     link.addEventListener('click', () => closeNav());
