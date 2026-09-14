@@ -6,6 +6,11 @@
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
+  const mobileUxStyles = document.createElement('link');
+  mobileUxStyles.rel = 'stylesheet';
+  mobileUxStyles.href = 'css/mobile-ux.css';
+  document.head.appendChild(mobileUxStyles);
+
   initMobileNav();
   initScrollReveal();
   initStatsCounters();
