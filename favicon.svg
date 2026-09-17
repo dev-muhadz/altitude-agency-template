@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Altitude</title>
+  <desc id="desc">Altitude brand mark</desc>
+  <rect width="64" height="64" rx="14" fill="#1b2a4a"/>
+  <path d="M32 12 50 48h-9l-3.4-7.2H26.4L23 48h-9L32 12Zm0 15.8-3.1 6.6h6.2L32 27.8Z" fill="#f5f3ed"/>
+  <path d="M43.5 12h7L32 48h-7l18.5-36Z" fill="#ff5a36" opacity=".9"/>
+</svg>
